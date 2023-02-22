@@ -16,7 +16,6 @@ function Dashboard(props: { authInteractor: AuthInteractor }) {
       active: false,
       paths: [
         LocalRoute.booking,
-        LocalRoute.bookingIndex,
         LocalRoute.bookingAdd,
         LocalRoute.bookingEdit,
       ],

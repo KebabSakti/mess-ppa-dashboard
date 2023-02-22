@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { LocalRoute } from "../../../common/config/local_route";
@@ -53,46 +52,12 @@ function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
 
   return (
     <>
-      <Portal>
-        <Modal id="booking" show={false}>
-          <form className="mt-4 space-y-4 max-w-lg">
-            <label className="input-group">
-              <span className="w-40">Mess</span>
-              <input
-                type="text"
-                name="name"
-                className="input input-bordered w-full"
-                required
-              />
-            </label>
-            <label className="input-group">
-              <span className="w-40">Denah</span>
-              <input
-                type="file"
-                name="denah"
-                className="file-input file-input-bordered w-full"
-                required
-              />
-            </label>
-            <label className="input-group">
-              <span className="w-40">Foto</span>
-              <input
-                type="file"
-                name="picture"
-                className="file-input file-input-bordered w-full"
-                required
-              />
-            </label>
-            <Button loading={false} text="Submit" />
-          </form>
-        </Modal>
-      </Portal>
-      <Navbar>
+      <Navbar title="DAFTAR BOOKING">
         <div className="flex space-x-2 pr-2">
           <input
             type="text"
             placeholder="Cari di sini"
-            className="input input-sm input-bordered rounded-full"
+            className="input input-sm w-full input-bordered rounded-full"
           />
           <button
             className="btn btn-sm btn-ghost btn-circle"
@@ -149,32 +114,44 @@ function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {bookingCollection.data?.map((e, i) => (
-                    <tr key={i}>
-                      <th>{e.name}</th>
-                      <td>
-                        {e.room}/{e.mess}/{e.location}
+                  {bookingCollection.loading ? (
+                    <tr>
+                      <td colSpan={6} className="text-center">
+                        <h1 className="font-semibold animate-pulse">
+                          Loading..
+                        </h1>
                       </td>
-                      <td>{LuxonDatetime.toHuman(e.checkin!)}</td>
-                      <td>{e.checkout && LuxonDatetime.toHuman(e.checkout)}</td>
-                      <th>{e.checkoutNote ?? "-"}</th>
-                      <th>
-                        <div className="badge badge-primary">
-                          {e.checkout == null ? "Checkin" : "Checkout"}
-                        </div>
-                      </th>
-                      <th>
-                        <div className="btn-group">
-                          <button className="btn btn-sm btn-success">
-                            Detail
-                          </button>
-                          <button className="btn btn-sm btn-warning">
-                            Delete
-                          </button>
-                        </div>
-                      </th>
                     </tr>
-                  ))}
+                  ) : (
+                    bookingCollection.data?.map((e, i) => (
+                      <tr key={i}>
+                        <th>{e.name}</th>
+                        <td>
+                          {e.room}/{e.mess}/{e.location}
+                        </td>
+                        <td>{LuxonDatetime.toHuman(e.checkin!)}</td>
+                        <td>
+                          {e.checkout && LuxonDatetime.toHuman(e.checkout)}
+                        </td>
+                        <th>{e.checkoutNote ?? "-"}</th>
+                        <th>
+                          <div className="badge badge-primary">
+                            {e.checkout == null ? "Checkin" : "Checkout"}
+                          </div>
+                        </th>
+                        <th>
+                          <div className="btn-group">
+                            <button className="btn btn-sm btn-info">
+                              Detail
+                            </button>
+                            <button className="btn btn-sm btn-error">
+                              Delete
+                            </button>
+                          </div>
+                        </th>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>

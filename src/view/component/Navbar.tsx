@@ -6,7 +6,7 @@ function Navbar(props: any) {
           <label
             htmlFor="my-drawer-2"
             tabIndex={0}
-            className="btn btn-ghost btn-circle drawer-button"
+            className="btn btn-ghost btn-circle drawer-button md:hidden"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -23,6 +23,7 @@ function Navbar(props: any) {
               />
             </svg>
           </label>
+          <h1 className="text-sm font-bold md:pl-4 md:text-lg">{props.title}</h1>
         </div>
         <div className="navbar-end">{props.children}</div>
       </div>

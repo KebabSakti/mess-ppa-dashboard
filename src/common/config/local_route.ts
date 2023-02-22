@@ -3,7 +3,6 @@ class LocalRoute {
   static dashboard = "/dashboard";
 
   static booking = `${this.dashboard}/booking`;
-  static bookingIndex = `${this.booking}/index`;
   static bookingAdd = `${this.booking}/add`;
   static bookingEdit = `${this.booking}/edit`;
 
