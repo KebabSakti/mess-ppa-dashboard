@@ -1,4 +1,4 @@
-  import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { InnEntity } from "../../domain/entity/inn_entity";
 import { StateEntity } from "../../domain/entity/state_entity";
 import { InnInteractor } from "../../domain/interactor/god_interactor";
@@ -39,6 +39,7 @@ function MessPage() {
 
   async function store(inputs: any) {
     try {
+      console.log(inputs);
       setLoading(true);
 
       await innInteractor.store(inputs);
@@ -74,7 +75,7 @@ function MessPage() {
 
     store({
       name: e.target.elements.name.value,
-      map: e.target.elements.denah.files[0],
+      denah: e.target.elements.denah.files[0],
       picture: e.target.elements.picture.files[0],
     });
   }

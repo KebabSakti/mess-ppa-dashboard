@@ -10,7 +10,10 @@ import { BookingInteractor } from "./domain/interactor/booking_interactor";
 import "./index.css";
 import { Dashboard } from "./view/component/Dashboard";
 import { Layout } from "./view/component/Layout";
-import { BookingPage } from "./view/page/BookingPage";
+import { BookingAddPage } from "./view/page/booking/BookingAddPage";
+import { BookingEditPage } from "./view/page/booking/BookingEditPage";
+import { BookingIndexPage } from "./view/page/booking/BookingIndexPage";
+import { BookingPage } from "./view/page/booking/BookingPage";
 import { LoginPage } from "./view/page/LoginPage";
 import { LokasiPage } from "./view/page/LokasiPage";
 import { MessPage } from "./view/page/MessPage";
@@ -36,7 +39,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: LocalRoute.root,
+        index: true,
         element: <LoginPage {...loginPageDepencies} />,
       },
       {
@@ -44,8 +47,22 @@ const router = createBrowserRouter([
         element: <Dashboard {...loginPageDepencies} />,
         children: [
           {
-            path: LocalRoute.dashboard,
-            element: <BookingPage {...bookingPageDepencies} />,
+            path: LocalRoute.booking,
+            element: <BookingPage />,
+            children: [
+              {
+                index: true,
+                element: <BookingIndexPage {...bookingPageDepencies} />,
+              },
+              {
+                path: LocalRoute.bookingAdd,
+                element: <BookingAddPage />,
+              },
+              {
+                path: LocalRoute.bookingEdit,
+                element: <BookingEditPage />,
+              },
+            ],
           },
           {
             path: LocalRoute.mess,

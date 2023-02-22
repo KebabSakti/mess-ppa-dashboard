@@ -2,7 +2,7 @@ function Modal(props: any) {
   return (
     <>
       <input type="checkbox" id={props.id} className="modal-toggle" />
-      <div className="modal">
+      <div className={`modal ${props.show && "modal-open"}`}>
         <div className="modal-box relative">
           <label
             htmlFor={props.id}

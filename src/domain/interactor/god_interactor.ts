@@ -30,10 +30,14 @@ class InnInteractor {
   async store(option?: { [key: string]: any } | undefined): Promise<void> {
     const form = new FormData();
     form.append("name", option!.name);
-    form.append("denah", option!.map);
+    form.append("denah", option!.denah);
     form.append("picture", option!.picture);
 
-    await axios.client().post("admin/inns", form);
+    await axios.client().post("admin/inns", form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   }
 
   async update(option?: { [key: string]: any } | undefined): Promise<void> {

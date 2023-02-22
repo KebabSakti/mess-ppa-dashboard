@@ -36,7 +36,7 @@ function LoginPage(props: { authInteractor: AuthInteractor }) {
 
       await props.authInteractor.login(inputs);
 
-      navigate(LocalRoute.dashboard, { replace: true });
+      navigate(LocalRoute.booking, { replace: true });
     } catch (error: any) {
       setAuthData({
         loading: false,

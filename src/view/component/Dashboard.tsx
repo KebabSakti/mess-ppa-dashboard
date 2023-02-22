@@ -12,45 +12,56 @@ function Dashboard(props: { authInteractor: AuthInteractor }) {
   const [menus, setMenus] = useState([
     {
       name: "Booking",
-      link: LocalRoute.dashboard,
+      link: LocalRoute.booking,
       active: false,
+      paths: [
+        LocalRoute.booking,
+        LocalRoute.bookingIndex,
+        LocalRoute.bookingAdd,
+        LocalRoute.bookingEdit,
+      ],
     },
     {
       name: "Mess",
       link: LocalRoute.mess,
       active: false,
+      paths: [],
     },
     {
       name: "Lokasi",
       link: LocalRoute.location,
       active: false,
+      paths: [],
     },
     {
       name: "Kamar",
       link: LocalRoute.room,
       active: false,
+      paths: [],
     },
     {
       name: "Voucher",
       link: LocalRoute.voucher,
       active: false,
+      paths: [],
     },
     {
       name: "Roster",
       link: LocalRoute.roster,
       active: false,
+      paths: [],
     },
     {
       name: "User",
       link: LocalRoute.user,
       active: false,
+      paths: [],
     },
   ]);
 
   function setActiveNav() {
     const updatedMenus = menus.map((element) => {
-      const active = element.link == location.pathname;
-
+      const active = element.paths.includes(location.pathname);
       return { ...element, active: active };
     });
 
@@ -58,6 +69,13 @@ function Dashboard(props: { authInteractor: AuthInteractor }) {
   }
 
   function init() {
+    if (
+      location.pathname == LocalRoute.dashboard ||
+      location.pathname == LocalRoute.dashboard + "/"
+    ) {
+      navigate(LocalRoute.booking, { replace: true });
+    }
+
     setActiveNav();
   }
 

@@ -1,8 +1,7 @@
 import { Outlet } from "react-router";
 
-function Layout() {
+function BookingPage() {
   return <Outlet />;
 }
 
-export { Layout };
-
+export { BookingPage };
