@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+  import { useEffect, useState } from "react";
 import { InnEntity } from "../../domain/entity/inn_entity";
 import { StateEntity } from "../../domain/entity/state_entity";
 import { InnInteractor } from "../../domain/interactor/god_interactor";

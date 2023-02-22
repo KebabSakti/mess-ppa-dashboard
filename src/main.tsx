@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router";
+import { createBrowserRouter } from "react-router-dom";
 import { AuthRemote } from "./adapter/repository/auth_remote";
 import { BookingRemote } from "./adapter/repository/booking_remote";
 import { LocalRoute } from "./common/config/local_route";
@@ -43,7 +44,7 @@ const router = createBrowserRouter([
         element: <Dashboard {...loginPageDepencies} />,
         children: [
           {
-            path: LocalRoute.booking,
+            path: LocalRoute.dashboard,
             element: <BookingPage {...bookingPageDepencies} />,
           },
           {

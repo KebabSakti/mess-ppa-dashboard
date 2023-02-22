@@ -4,14 +4,14 @@ import { InnEntity } from "../entity/inn_entity";
 import { LocationEntity } from "../entity/location_entity";
 import { RoomEntity } from "../entity/room_entity";
 
-const client = AxiosHttp.client();
+const axios = new AxiosHttp();
 
 class InnInteractor {
   async single(
     option?: { [key: string]: any } | undefined
   ): Promise<InnEntity> {
     try {
-      const request = await client.get(`admin/inns/${option!.id}`);
+      const request = await axios.client().get(`admin/inns/${option!.id}`);
       const results = request.data;
       return results;
     } catch (error: any) {
@@ -22,7 +22,7 @@ class InnInteractor {
   async collections(
     option?: { [key: string]: any } | undefined
   ): Promise<InnEntity[]> {
-    const request = await client.get(`admin/inns`);
+    const request = await axios.client().get(`admin/inns`);
     const results = request.data;
     return results;
   }
@@ -30,18 +30,18 @@ class InnInteractor {
   async store(option?: { [key: string]: any } | undefined): Promise<void> {
     const form = new FormData();
     form.append("name", option!.name);
-    form.append("map", option!.map);
+    form.append("denah", option!.map);
     form.append("picture", option!.picture);
 
-    await client.post("admin/inns", form);
+    await axios.client().post("admin/inns", form);
   }
 
   async update(option?: { [key: string]: any } | undefined): Promise<void> {
-    await client.put(`admin/inns/${option!.id}`, { data: option });
+    await axios.client().put(`admin/inns/${option!.id}`, { data: option });
   }
 
   async delete(option?: { [key: string]: any } | undefined): Promise<void> {
-    await client.delete(`admin/inns/${option!.id}`);
+    await axios.client().delete(`admin/inns/${option!.id}`);
   }
 }
 
@@ -50,7 +50,7 @@ class LocationInteractor {
     option?: { [key: string]: any } | undefined
   ): Promise<LocationEntity> {
     try {
-      const request = await client.get(`admin/locations/${option!.id}`);
+      const request = await axios.client().get(`admin/locations/${option!.id}`);
       const results = request.data;
       return results;
     } catch (error: any) {
@@ -61,21 +61,21 @@ class LocationInteractor {
   async collections(
     option?: { [key: string]: any } | undefined
   ): Promise<LocationEntity[]> {
-    const request = await client.get(`admin/locations`);
+    const request = await axios.client().get(`admin/locations`);
     const results = request.data;
     return results;
   }
 
   async store(option?: { [key: string]: any } | undefined): Promise<void> {
-    await client.post("admin/locations", { data: option });
+    await axios.client().post("admin/locations", { data: option });
   }
 
   async update(option?: { [key: string]: any } | undefined): Promise<void> {
-    await client.put(`admin/locations/${option!.id}`, { data: option });
+    await axios.client().put(`admin/locations/${option!.id}`, { data: option });
   }
 
   async delete(option?: { [key: string]: any } | undefined): Promise<void> {
-    await client.delete(`admin/locations/${option!.id}`);
+    await axios.client().delete(`admin/locations/${option!.id}`);
   }
 }
 
@@ -84,7 +84,7 @@ class RoomInteractor {
     option?: { [key: string]: any } | undefined
   ): Promise<RoomEntity> {
     try {
-      const request = await client.get(`admin/rooms/${option!.id}`);
+      const request = await axios.client().get(`admin/rooms/${option!.id}`);
       const results = request.data;
       return results;
     } catch (error: any) {
@@ -95,21 +95,21 @@ class RoomInteractor {
   async collections(
     option?: { [key: string]: any } | undefined
   ): Promise<RoomEntity[]> {
-    const request = await client.get(`admin/rooms`);
+    const request = await axios.client().get(`admin/rooms`);
     const results = request.data;
     return results;
   }
 
   async store(option?: { [key: string]: any } | undefined): Promise<void> {
-    await client.post("admin/rooms", { data: option });
+    await axios.client().post("admin/rooms", { data: option });
   }
 
   async update(option?: { [key: string]: any } | undefined): Promise<void> {
-    await client.put(`admin/rooms/${option!.id}`, { data: option });
+    await axios.client().put(`admin/rooms/${option!.id}`, { data: option });
   }
 
   async delete(option?: { [key: string]: any } | undefined): Promise<void> {
-    await client.delete(`admin/rooms/${option!.id}`);
+    await axios.client().delete(`admin/rooms/${option!.id}`);
   }
 }
 

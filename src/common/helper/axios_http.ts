@@ -1,8 +1,8 @@
+import axios, { AxiosRequestConfig } from "axios";
 import { RemoteApi } from "../../common/config/remote_api";
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 class AxiosHttp {
-  static client() {
+  client() {
     let config: AxiosRequestConfig = {
       baseURL: RemoteApi.base,
       headers: { "Content-Type": "application/json" },
