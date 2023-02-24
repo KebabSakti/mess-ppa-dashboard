@@ -1,92 +1,78 @@
-import { useEffect, useState } from "react";
 import debounce from "lodash.debounce";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { LocalRoute } from "../../../common/config/local_route";
-import { LuxonDatetime } from "../../../common/helper/luxon_datetime";
-import { BookingEntity } from "../../../domain/entity/booking_entity";
+import { RemoteApi } from "../../../common/config/remote_api";
+import { RoomEntity } from "../../../domain/entity/room_entity";
 import { StateEntity } from "../../../domain/entity/state_entity";
-import { BookingInteractor } from "../../../domain/interactor/booking_interactor";
+import { RoomInteractor } from "../../../domain/interactor/god_interactor";
 import { Navbar } from "../../component/Navbar";
 import { Shimmer } from "../../component/Shimmer";
 
-function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
+const interactor = new RoomInteractor();
+
+function RoomIndexPage(props: any) {
   const navigate = useNavigate();
   const [filter, setFilter] = useState({
-    // page: 1,
-    // limit: 10,
     search: "",
   });
-  const [bookingCollection, setBookingCollection] = useState<
-    StateEntity<BookingEntity[]>
-  >({
+  const [collection, setCollection] = useState<StateEntity<RoomEntity[]>>({
     loading: true,
     data: [],
   });
 
-  async function getBookingCollection() {
+  async function getCollection() {
     try {
-      setBookingCollection({ ...bookingCollection, loading: true });
-      const results = await props.bookingInteractor.collections(filter);
+      setCollection({ ...collection, loading: true });
+      const results = await interactor.collections(filter);
 
-      setBookingCollection({
-        ...bookingCollection,
+      setCollection({
+        ...collection,
         loading: false,
         data: results,
       });
     } catch (error: any) {
-      setBookingCollection({
-        ...bookingCollection,
+      setCollection({
+        ...collection,
         loading: false,
         error: error.message,
       });
     }
   }
 
-  async function deleteBoking(id: string) {
+  async function deleteData(id: string) {
     try {
-      await props.bookingInteractor.delete({ id: id });
-      getBookingCollection();
+      await interactor.delete({ id: id });
+      getCollection();
     } catch (error: any) {
-      console.log(error);
+      props.setToast(error.message);
     }
-  }
-
-  function addBtnOnClick() {
-    navigate(LocalRoute.bookingAdd);
   }
 
   function onSearch(e: any) {
     setFilter({ ...filter, search: e.target.value });
   }
 
-  function paginateOnClick(key: string) {
-    // if (key == "next") {
-    //   if (filter.page < filter.limit) {
-    //     setFilter({ ...filter, page: filter.page + 1 });
-    //   }
-    // } else {
-    //   if (filter.page > 0) {
-    //     setFilter({ ...filter, page: filter.page - 1 });
-    //   }
-    // }
+  function addBtnOnClick() {
+    navigate(LocalRoute.roomAdd);
   }
 
-  function detailOnClick(id: string) {
-    navigate(`${LocalRoute.bookingDetail}/${id}`);
+  function editOnClick(id: string) {
+    navigate(`${LocalRoute.roomEdit}/${id}`);
   }
 
   function deleteOnClick(id: string) {
     if (window.confirm("Proses ini tidak dapat dikembalikan, lanjutkan?")) {
-      deleteBoking(id);
+      deleteData(id);
     }
   }
 
   async function init() {
-    getBookingCollection();
+    getCollection();
   }
 
   useEffect(() => {
-    getBookingCollection();
+    getCollection();
   }, [filter]);
 
   useEffect(() => {
@@ -95,7 +81,7 @@ function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
 
   return (
     <>
-      <Navbar title="LIST BOOKING">
+      <Navbar title="LIST KAMAR">
         <div className="flex space-x-2 pr-2">
           <input
             type="text"
@@ -103,7 +89,7 @@ function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
             className="input input-sm w-full input-bordered rounded-full"
             onChange={debounce((e) => onSearch(e), 500)}
           />
-          {/* <button
+          <button
             className="btn btn-sm btn-ghost btn-circle"
             onClick={addBtnOnClick}
           >
@@ -121,14 +107,13 @@ function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
                 d="M12 6v12m6-6H6"
               />
             </svg>
-          </button> */}
+          </button>
         </div>
       </Navbar>
       <div className="flex flex-col h-screen p-4">
-        {/* CONTENT */}
         <div className="card bg-base-200">
           <div className="card-body">
-            {bookingCollection.loading ? (
+            {collection.loading ? (
               <Shimmer />
             ) : (
               <>
@@ -136,17 +121,16 @@ function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
                   <table className="table table-zebra w-full">
                     <thead>
                       <tr>
-                        <th>Nama</th>
                         <th>Kamar</th>
-                        <th>Checkin</th>
-                        <th>Checkout</th>
-                        <th>Keterangan</th>
+                        <th>Lokasi</th>
+                        <th>Mess</th>
+                        <th>Kapasitas</th>
                         <th>Status</th>
                         <th></th>
                       </tr>
                     </thead>
                     <tbody>
-                      {bookingCollection.loading ? (
+                      {collection.loading ? (
                         <tr>
                           <td colSpan={6} className="text-center">
                             <h1 className="font-semibold animate-pulse">
@@ -155,29 +139,28 @@ function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
                           </td>
                         </tr>
                       ) : (
-                        bookingCollection.data?.map((e, i) => (
+                        collection.data?.map((e, i) => (
                           <tr key={i}>
                             <th>{e.name}</th>
+                            <th>{e.location}</th>
+                            <th>{e.mess}</th>
+                            <th>{e.capacity}</th>
                             <td>
-                              {e.room}/{e.mess}/{e.location}
+                              {e.active ? (
+                                <div className="badge badge-success">Aktif</div>
+                              ) : (
+                                <div className="badge badge-error">
+                                  Non Aktif
+                                </div>
+                              )}
                             </td>
-                            <td>{LuxonDatetime.toHuman(e.checkin!)}</td>
-                            <td>
-                              {e.checkout && LuxonDatetime.toHuman(e.checkout)}
-                            </td>
-                            <th>{e.checkoutNote ?? "-"}</th>
-                            <th>
-                              <div className="badge badge-primary">
-                                {e.checkout == null ? "Checkin" : "Checkout"}
-                              </div>
-                            </th>
                             <th>
                               <div className="btn-group">
                                 <button
-                                  className="btn btn-sm btn-info"
-                                  onClick={() => detailOnClick(e.id!)}
+                                  className="btn btn-sm btn-warning"
+                                  onClick={() => editOnClick(e.id!)}
                                 >
-                                  Detail
+                                  Edit
                                 </button>
                                 <button
                                   className="btn btn-sm btn-error"
@@ -197,10 +180,9 @@ function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
             )}
           </div>
         </div>
-        {/* CONTENT */}
       </div>
     </>
   );
 }
 
-export { BookingIndexPage };
+export { RoomIndexPage };

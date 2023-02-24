@@ -14,53 +14,42 @@ function Dashboard(props: { authInteractor: AuthInteractor }) {
       name: "Booking",
       link: LocalRoute.booking,
       active: false,
-      paths: [
-        LocalRoute.booking,
-        LocalRoute.bookingAdd,
-        LocalRoute.bookingEdit,
-      ],
     },
     {
       name: "Mess",
       link: LocalRoute.mess,
       active: false,
-      paths: [],
     },
     {
       name: "Lokasi",
       link: LocalRoute.location,
       active: false,
-      paths: [],
     },
     {
       name: "Kamar",
       link: LocalRoute.room,
       active: false,
-      paths: [],
     },
     {
-      name: "Voucher",
-      link: LocalRoute.voucher,
+      name: "Karyawan",
+      link: LocalRoute.employee,
       active: false,
-      paths: [],
     },
+    // {
+    //   name: "Voucher",
+    //   link: LocalRoute.voucher,
+    //   active: false,
+    // },
     {
       name: "Roster",
       link: LocalRoute.roster,
       active: false,
-      paths: [],
-    },
-    {
-      name: "User",
-      link: LocalRoute.user,
-      active: false,
-      paths: [],
     },
   ]);
 
   function setActiveNav() {
     const updatedMenus = menus.map((element) => {
-      const active = element.paths.includes(location.pathname);
+      const active = location.pathname.includes(element.name.toLowerCase());
       return { ...element, active: active };
     });
 
