@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { RosterEntity } from "../../../domain/entity/roster_entity";
 import { StateEntity } from "../../../domain/entity/state_entity";
 import { RosterInteractor } from "../../../domain/interactor/god_interactor";
 import { Navbar } from "../../component/Navbar";
@@ -9,8 +7,7 @@ import { Shimmer } from "../../component/Shimmer";
 const interactor = new RosterInteractor();
 
 function RosterIndexPage(props: any) {
-  const navigate = useNavigate();
-  const [collection, setCollection] = useState<StateEntity<RosterEntity[]>>({
+  const [collection, setCollection] = useState<StateEntity<any>>({
     loading: true,
     data: [],
   });
@@ -18,12 +15,42 @@ function RosterIndexPage(props: any) {
   async function getCollection() {
     try {
       setCollection({ ...collection, loading: true });
+
       const results = await interactor.collections();
+      const nrp: any = [];
+      const name: any = [];
+      const employee: any = [];
+
+      results.map((e) => {
+        nrp.push(e.nrp);
+        name.push(e.name);
+      });
+
+      const uniqueNrp: any = [...new Set(nrp)];
+      const uniqueName: any = [...new Set(name)];
+
+      for (let i = 0; i < uniqueNrp.length; i++) {
+        employee.push({
+          nrp: uniqueNrp[i],
+          name: uniqueName[i],
+          rosters: [],
+        });
+      }
+
+      employee.map((e: any, i: number) => {
+        const rosters = results
+          .filter((f: any) => f.nrp == e.nrp)
+          .map((item: any) => {
+            return item.status;
+          });
+
+        employee[i] = { ...e, rosters: rosters };
+      });
 
       setCollection({
         ...collection,
         loading: false,
-        data: results,
+        data: employee,
       });
     } catch (error: any) {
       setCollection({
@@ -44,6 +71,8 @@ function RosterIndexPage(props: any) {
 
       props.setLoading(false);
       props.setToast("Data berhasil di proses");
+
+      getCollection();
     } catch (error: any) {
       props.setLoading(false);
       props.setToast(error.message);
@@ -68,48 +97,12 @@ function RosterIndexPage(props: any) {
     init();
   }, []);
 
-  // useEffect(() => {
-  //   const nrp: any = [];
-  //   const name: any = [];
-  //   const employee: any = [];
-
-  //   collection.data?.map((e) => {
-  //     nrp.push(e.nrp);
-  //     name.push(e.name);
-  //   });
-
-  //   const uniqueNrp: any = [...new Set(nrp)];
-  //   const uniqueName: any = [...new Set(name)];
-
-  //   for (let i = 0; i < uniqueNrp.length; i++) {
-  //     employee.push({
-  //       [uniqueNrp[i]]: {
-  //         nrp: uniqueNrp[i],
-  //         name: uniqueName[i],
-  //         rosters: [],
-  //       },
-  //     });
-  //   }
-
-  //   let rosters: any = [];
-  //   employee.map((e: any) => {
-  //     rosters = collection.data?.filter((f) => f.nrp == "1042214");
-  //   });
-
-  //   const status: any = [];
-  //   rosters.map((s: any) => {
-  //     status.push(s.status);
-  //   });
-
-  //   console.log(employee);
-  // }, [collection]);
-
   return (
     <>
       <Navbar title="ROSTER KARYAWAN" />
       <div className="flex flex-col h-screen p-4">
         <div className="card bg-base-200">
-          <div className="card-body">
+          <div className="card-body space-y-4">
             {collection.loading ? (
               <Shimmer />
             ) : (
@@ -126,14 +119,44 @@ function RosterIndexPage(props: any) {
                       />
                     </label>
                   </div>
-                  <button className="btn">Submit</button>
+                  <button className="btn btn-primary">Submit</button>
                 </form>
-                {/* <div className="overflow-x-auto">
-                  <table className="table table-compact table-zebra w-full">
-                    <thead></thead>
-                    <tbody></tbody>
-                  </table>
-                </div> */}
+                {collection.data!.length > 0 && (
+                  <div className="overflow-x-auto">
+                    <table className="table table-compact table-zebra w-full">
+                      <thead>
+                        <tr>
+                          <th>NRP</th>
+                          <th>NAMA</th>
+                          {collection.data![0].rosters.map(
+                            (e: any, i: number) => (
+                              <th key={i}>{i + 1}</th>
+                            )
+                          )}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {collection.data?.map((e: any, i: any) => (
+                          <tr key={i}>
+                            <td>{e.nrp}</td>
+                            <td>{e.name}</td>
+                            {e.rosters.map((r: any, t: any) => (
+                              <td key={t}>
+                                {r == "OFF" ? (
+                                  <label className="text-success font-bold">
+                                    {r}
+                                  </label>
+                                ) : (
+                                  <label>{r}</label>
+                                )}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -144,4 +167,3 @@ function RosterIndexPage(props: any) {
 }
 
 export { RosterIndexPage };
-

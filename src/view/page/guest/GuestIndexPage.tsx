@@ -1,22 +1,21 @@
 import debounce from "lodash.debounce";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { LocalRoute } from "../../../common/config/local_route";
-import { RemoteApi } from "../../../common/config/remote_api";
-import { RoomEntity } from "../../../domain/entity/room_entity";
+import { EmployeeEntity } from "../../../domain/entity/employee_entity";
 import { StateEntity } from "../../../domain/entity/state_entity";
-import { RoomInteractor } from "../../../domain/interactor/god_interactor";
+import { GuestInteractor } from "../../../domain/interactor/god_interactor";
 import { Navbar } from "../../component/Navbar";
 import { Shimmer } from "../../component/Shimmer";
 
-const interactor = new RoomInteractor();
+const interactor = new GuestInteractor();
 
-function RoomIndexPage(props: any) {
+function GuestIndexPage(props: any) {
   const navigate = useNavigate();
   const [filter, setFilter] = useState({
     search: "",
   });
-  const [collection, setCollection] = useState<StateEntity<RoomEntity[]>>({
+  const [collection, setCollection] = useState<StateEntity<EmployeeEntity[]>>({
     loading: true,
     data: [],
   });
@@ -54,12 +53,9 @@ function RoomIndexPage(props: any) {
   }
 
   function addBtnOnClick() {
-    navigate(LocalRoute.roomAdd);
+    navigate(LocalRoute.employeeAdd);
   }
 
-  function editOnClick(id: string) {
-    navigate(`${LocalRoute.roomEdit}/${id}`);
-  }
 
   function deleteOnClick(id: string) {
     if (window.confirm("Proses ini tidak dapat dikembalikan, lanjutkan?")) {
@@ -81,7 +77,7 @@ function RoomIndexPage(props: any) {
 
   return (
     <>
-      <Navbar title="LIST KAMAR">
+      <Navbar title="LIST TAMU">
         <div className="flex space-x-2 pr-2">
           <input
             type="text"
@@ -121,12 +117,8 @@ function RoomIndexPage(props: any) {
                   <table className="table table-zebra w-full">
                     <thead>
                       <tr>
-                        <th>Kamar</th>
-                        <th>Lokasi</th>
-                        <th>Foto</th>
-                        <th>Mess</th>
-                        <th>Kapasitas</th>
-                        <th>Status</th>
+                        <th>Nama</th>
+                        <th>Telp</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -142,35 +134,10 @@ function RoomIndexPage(props: any) {
                       ) : (
                         collection.data?.map((e, i) => (
                           <tr key={i}>
-                            <td>{e.name}</td>
-                            <td>{e.location}</td>
-                            <td>
-                              <a
-                                href={RemoteApi.url + e.picture}
-                                target="_blank"
-                              >
-                                Lihat
-                              </a>
-                            </td>
-                            <td>{e.mess}</td>
-                            <td>{e.capacity}</td>
-                            <td>
-                              {e.active ? (
-                                <div className="badge badge-success">Aktif</div>
-                              ) : (
-                                <div className="badge badge-error">
-                                  Non Aktif
-                                </div>
-                              )}
-                            </td>
-                            <td>
+                            <th>{e.name}</th>
+                            <th>{e.phone}</th>
+                            <th>
                               <div className="btn-group">
-                                <button
-                                  className="btn btn-sm btn-warning"
-                                  onClick={() => editOnClick(e.id!)}
-                                >
-                                  Edit
-                                </button>
                                 <button
                                   className="btn btn-sm btn-error"
                                   onClick={() => deleteOnClick(e.id!)}
@@ -178,7 +145,7 @@ function RoomIndexPage(props: any) {
                                   Delete
                                 </button>
                               </div>
-                            </td>
+                            </th>
                           </tr>
                         ))
                       )}
@@ -194,4 +161,5 @@ function RoomIndexPage(props: any) {
   );
 }
 
-export { RoomIndexPage };
+export { GuestIndexPage };
+

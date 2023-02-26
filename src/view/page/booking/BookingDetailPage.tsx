@@ -125,12 +125,22 @@ function BookingDetailPage(props: { bookingInteractor: BookingInteractor }) {
                     </label>
                   </div>
                   <div className="flex flex-col">
-                    <label>Status</label>
+                    <label>Jenis</label>
                     <label className="font-bold text-lg">
                       {bookingSingle.data?.guest ? (
-                        <div className="badge badge-secondary">Tamu</div>
+                        <div className="badge badge-info">Tamu</div>
                       ) : (
                         <div className="badge badge-primary">Karyawan</div>
+                      )}
+                    </label>
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Status</label>
+                    <label className="font-bold text-lg">
+                      {bookingSingle.data?.checkout == null ? (
+                        <div className="badge badge-success">Checkin</div>
+                      ) : (
+                        <div className="badge badge-error">Checkout</div>
                       )}
                     </label>
                   </div>

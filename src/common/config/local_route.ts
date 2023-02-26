@@ -23,8 +23,12 @@ class LocalRoute {
   static employeeAdd = `${this.employee}/add`;
   static employeeEdit = `${this.employee}/edit`;
 
+  static guest = `${this.dashboard}/tamu`;
   static roster = `${this.dashboard}/roster`;
   static voucher = `${this.dashboard}/voucher`;
+
+  static config = `${this.dashboard}/setting`;
+  static configEdit = `${this.config}/edit`;
 }
 
 export { LocalRoute };

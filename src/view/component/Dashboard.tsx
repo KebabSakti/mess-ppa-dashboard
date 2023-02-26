@@ -35,14 +35,24 @@ function Dashboard(props: { authInteractor: AuthInteractor }) {
       link: LocalRoute.employee,
       active: false,
     },
-    // {
-    //   name: "Voucher",
-    //   link: LocalRoute.voucher,
-    //   active: false,
-    // },
+    {
+      name: "Tamu",
+      link: LocalRoute.guest,
+      active: false,
+    },
     {
       name: "Roster",
       link: LocalRoute.roster,
+      active: false,
+    },
+    {
+      name: "Voucher",
+      link: LocalRoute.voucher,
+      active: false,
+    },
+    {
+      name: "Setting",
+      link: LocalRoute.config,
       active: false,
     },
   ]);

@@ -1,8 +1,11 @@
 import { AxiosHttp } from "../../common/helper/axios_http";
 import { ErrorHandler } from "../../common/helper/error_handler";
+import { ConfigEntity } from "../entity/config_entity";
+import { GuestEntity } from "../entity/guest_entity";
 import { InnEntity } from "../entity/inn_entity";
 import { LocationEntity } from "../entity/location_entity";
 import { RoomEntity } from "../entity/room_entity";
+import { RosterEntity } from "../entity/roster_entity";
 
 const axios = new AxiosHttp();
 
@@ -217,10 +220,26 @@ class EmployeeInteractor {
   }
 }
 
+class GuestInteractor {
+  async collections(
+    option?: { [key: string]: any } | undefined
+  ): Promise<GuestEntity[]> {
+    const request = await axios
+      .client()
+      .get(`admin/guests`, { params: option });
+    const results = request.data;
+    return results;
+  }
+
+  async delete(option?: { [key: string]: any } | undefined): Promise<void> {
+    await axios.client().delete(`admin/guests/${option!.id}`);
+  }
+}
+
 class RosterInteractor {
   async collections(
     option?: { [key: string]: any } | undefined
-  ): Promise<RoomEntity[]> {
+  ): Promise<RosterEntity[]> {
     const request = await axios
       .client()
       .get(`admin/rosters`, { params: option });
@@ -240,10 +259,41 @@ class RosterInteractor {
   }
 }
 
+class VoucherInteractor {
+  async collections(
+    option?: { [key: string]: any } | undefined
+  ): Promise<GuestEntity[]> {
+    const request = await axios
+      .client()
+      .get(`admin/vouchers`, { params: option });
+    const results = request.data;
+    return results;
+  }
+}
+
+class ConfigInteractor {
+  async collections(
+    option?: { [key: string]: any } | undefined
+  ): Promise<ConfigEntity[]> {
+    const request = await axios
+      .client()
+      .get(`admin/configs`, { params: option });
+    const results = request.data;
+    return results;
+  }
+
+  async update(option?: { [key: string]: any } | undefined): Promise<void> {
+    await axios.client().put(`admin/configs/${option!.id}`, { data: option });
+  }
+}
+
 export {
   InnInteractor,
   LocationInteractor,
   RoomInteractor,
   EmployeeInteractor,
   RosterInteractor,
+  GuestInteractor,
+  VoucherInteractor,
+  ConfigInteractor,
 };

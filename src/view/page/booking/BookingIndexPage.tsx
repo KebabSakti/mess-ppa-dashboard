@@ -137,6 +137,7 @@ function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
                     <thead>
                       <tr>
                         <th>Nama</th>
+                        <th>Jenis</th>
                         <th>Kamar</th>
                         <th>Checkin</th>
                         <th>Checkout</th>
@@ -158,6 +159,17 @@ function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
                         bookingCollection.data?.map((e, i) => (
                           <tr key={i}>
                             <th>{e.name}</th>
+                            <th>
+                              {e.guest == null ? (
+                                <div className="badge badge-info">
+                                  Tamu
+                                </div>
+                              ) : (
+                                <div className="badge badge-primary">
+                                  Karyawan
+                                </div>
+                              )}
+                            </th>
                             <td>
                               {e.room}/{e.mess}/{e.location}
                             </td>
@@ -167,9 +179,15 @@ function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
                             </td>
                             <th>{e.checkoutNote ?? "-"}</th>
                             <th>
-                              <div className="badge badge-primary">
-                                {e.checkout == null ? "Checkin" : "Checkout"}
-                              </div>
+                              {e.checkout == null ? (
+                                <div className="badge badge-success">
+                                  Checkin
+                                </div>
+                              ) : (
+                                <div className="badge badge-error">
+                                  Checkout
+                                </div>
+                              )}
                             </th>
                             <th>
                               <div className="btn-group">

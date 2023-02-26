@@ -28,6 +28,9 @@ import { RoomAddPage } from "./view/page/room/RoomAddPage";
 import { RoomEditPage } from "./view/page/room/RoomEditPage";
 import { RoomIndexPage } from "./view/page/room/RoomIndexPage";
 import { RosterIndexPage } from "./view/page/roster/RosterIndexPage";
+import { GuestIndexPage } from "./view/page/guest/GuestIndexPage";
+import { VoucherIndexPage } from "./view/page/voucher/VoucherIndexPage";
+import { ConfigIndexPage } from "./view/page/config/ConfigIndexPage";
 
 function App() {
   const [loading, setLoading] = useState<any>(false);
@@ -168,6 +171,16 @@ function App() {
               ],
             },
             {
+              path: LocalRoute.guest,
+              element: <Outlet />,
+              children: [
+                {
+                  index: true,
+                  element: <GuestIndexPage {...globalDepencies} />,
+                },
+              ],
+            },
+            {
               path: LocalRoute.roster,
               element: <Outlet />,
               children: [
@@ -175,6 +188,30 @@ function App() {
                   index: true,
                   element: <RosterIndexPage {...globalDepencies} />,
                 },
+              ],
+            },
+            {
+              path: LocalRoute.voucher,
+              element: <Outlet />,
+              children: [
+                {
+                  index: true,
+                  element: <VoucherIndexPage {...globalDepencies} />,
+                },
+              ],
+            },
+            {
+              path: LocalRoute.config,
+              element: <Outlet />,
+              children: [
+                {
+                  index: true,
+                  element: <ConfigIndexPage {...globalDepencies} />,
+                },
+                // {
+                //   path: LocalRoute.employeeEdit + "/:id",
+                //   element: <EmployeeEditPage {...globalDepencies} />,
+                // },
               ],
             },
           ],
