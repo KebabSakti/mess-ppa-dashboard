@@ -272,6 +272,18 @@ class VoucherInteractor {
 }
 
 class ConfigInteractor {
+  async single(
+    option?: { [key: string]: any } | undefined
+  ): Promise<RoomEntity> {
+    try {
+      const request = await axios.client().get(`admin/configs/${option!.id}`);
+      const results = request.data;
+      return results;
+    } catch (error: any) {
+      throw ErrorHandler.read(error);
+    }
+  }
+
   async collections(
     option?: { [key: string]: any } | undefined
   ): Promise<ConfigEntity[]> {

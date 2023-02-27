@@ -31,6 +31,7 @@ import { RosterIndexPage } from "./view/page/roster/RosterIndexPage";
 import { GuestIndexPage } from "./view/page/guest/GuestIndexPage";
 import { VoucherIndexPage } from "./view/page/voucher/VoucherIndexPage";
 import { ConfigIndexPage } from "./view/page/config/ConfigIndexPage";
+import { ConfigEditPage } from "./view/page/config/ConfigEditPage";
 
 function App() {
   const [loading, setLoading] = useState<any>(false);
@@ -208,10 +209,10 @@ function App() {
                   index: true,
                   element: <ConfigIndexPage {...globalDepencies} />,
                 },
-                // {
-                //   path: LocalRoute.employeeEdit + "/:id",
-                //   element: <EmployeeEditPage {...globalDepencies} />,
-                // },
+                {
+                  path: LocalRoute.configEdit + "/:id",
+                  element: <ConfigEditPage {...globalDepencies} />,
+                },
               ],
             },
           ],
