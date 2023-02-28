@@ -15,19 +15,43 @@ import {
 import { Navbar } from "../../component/Navbar";
 
 const interactor = new RoomInteractor();
+const messInteractor = new InnInteractor();
 const locationInteractor = new LocationInteractor();
 
 function RoomAddPage(props: any) {
   const navigate: any = useNavigate();
+  const [mess, setMess] = useState<StateEntity<InnEntity[]>>({
+    loading: true,
+    data: [],
+  });
   const [location, setLocation] = useState<StateEntity<LocationEntity[]>>({
     loading: true,
     data: [],
   });
 
-  async function getLocation() {
+  async function getMess() {
+    try {
+      setMess({ ...location, loading: true });
+      const results = await messInteractor.collections();
+
+      setMess({
+        ...location,
+        loading: false,
+        data: results,
+      });
+    } catch (error: any) {
+      setMess({
+        ...location,
+        loading: false,
+        error: error.message,
+      });
+    }
+  }
+
+  async function getLocation(option: any) {
     try {
       setLocation({ ...location, loading: true });
-      const results = await locationInteractor.collections();
+      const results = await locationInteractor.collections(option);
 
       setLocation({
         ...location,
@@ -75,8 +99,17 @@ function RoomAddPage(props: any) {
   function formOnSubmit(event: any) {
     event.preventDefault();
 
+    console.log(event.target["innId"]);
+
     const inputs = {
+      innId: event.target["innId"].value,
       locationId: event.target["locationId"].value,
+      inn: event.target["innId"].options[event.target["innId"].selectedIndex]
+        .text,
+      location:
+        event.target["locationId"].options[
+          event.target["locationId"].selectedIndex
+        ].text,
       name: event.target["name"].value,
       capacity: event.target["capacity"].value,
       picture: event.target["picture"].files[0],
@@ -86,8 +119,13 @@ function RoomAddPage(props: any) {
     store(inputs);
   }
 
+  function messOnChange(e: any) {
+    const innId = e.target.value;
+    getLocation({ innId: innId });
+  }
+
   async function init() {
-    getLocation();
+    getMess();
   }
 
   useEffect(() => {
@@ -118,6 +156,22 @@ function RoomAddPage(props: any) {
         <div className="card bg-base-200">
           <div className="card-body">
             <form className="space-y-4" onSubmit={formOnSubmit}>
+              <div className="flex flex-col space-y-2">
+                <label>Mess</label>
+                <select
+                  onChange={messOnChange}
+                  name="innId"
+                  className="select select-bordered w-full max-w-xs"
+                  required
+                >
+                  <option> - Pilih Mess - </option>
+                  {mess.data?.map((e, i) => (
+                    <option key={i} value={e.id}>
+                      {e.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="flex flex-col space-y-2">
                 <label>Lokasi</label>
                 <select

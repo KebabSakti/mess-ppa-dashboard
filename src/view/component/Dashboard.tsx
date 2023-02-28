@@ -11,6 +11,11 @@ function Dashboard(props: { authInteractor: AuthInteractor }) {
 
   const [menus, setMenus] = useState([
     {
+      name: "Home",
+      link: LocalRoute.home,
+      active: false,
+    },
+    {
       name: "Booking",
       link: LocalRoute.booking,
       active: false,
@@ -108,7 +113,7 @@ function Dashboard(props: { authInteractor: AuthInteractor }) {
               <a
                 onClick={() => {
                   props.authInteractor.logout();
-                  navigate("/", { replace: true });
+                  navigate(LocalRoute.root, { replace: true });
                 }}
               >
                 Logout

@@ -23,33 +23,10 @@ const locationInteractor = new LocationInteractor();
 function RoomEditPage(props: any) {
   const { id } = useParams();
   const navigate: any = useNavigate();
-  const [location, setLocation] = useState<StateEntity<LocationEntity[]>>({
-    loading: true,
-    data: [],
-  });
   const [single, setSingle] = useState<StateEntity<RoomEntity>>({
     loading: true,
     data: null,
   });
-
-  async function getMess() {
-    try {
-      setLocation({ ...location, loading: true });
-      const results = await locationInteractor.collections();
-
-      setLocation({
-        ...location,
-        loading: false,
-        data: results,
-      });
-    } catch (error: any) {
-      setLocation({
-        ...location,
-        loading: false,
-        error: error.message,
-      });
-    }
-  }
 
   async function getSingle() {
     try {
@@ -104,7 +81,6 @@ function RoomEditPage(props: any) {
 
     const inputs = {
       id: id,
-      locationId: event.target["locationId"].value,
       name: event.target["name"].value,
       capacity: event.target["capacity"].value,
       picture: event.target["picture"].files[0],
@@ -116,7 +92,6 @@ function RoomEditPage(props: any) {
 
   async function init() {
     getSingle();
-    getMess();
   }
 
   useEffect(() => {
@@ -152,19 +127,22 @@ function RoomEditPage(props: any) {
               <>
                 <form className="space-y-4" onSubmit={formOnSubmit}>
                   <div className="flex flex-col space-y-2">
+                    <label>Mess</label>
+                    <input
+                      type="text"
+                      className="input input-bordered w-full max-w-xs"
+                      defaultValue={single.data?.mess}
+                      readOnly
+                    />
+                  </div>
+                  <div className="flex flex-col space-y-2">
                     <label>Lokasi</label>
-                    <select
-                      name="locationId"
-                      className="select select-bordered w-full max-w-xs"
-                      defaultValue={single.data?.id}
-                      required
-                    >
-                      {location.data?.map((e, i) => (
-                        <option key={i} value={e.id}>
-                          {e.name}
-                        </option>
-                      ))}
-                    </select>
+                    <input
+                      type="text"
+                      className="input input-bordered w-full max-w-xs"
+                      defaultValue={single.data?.location}
+                      readOnly
+                    />
                   </div>
                   <div className="flex flex-col space-y-2">
                     <label>Nama</label>

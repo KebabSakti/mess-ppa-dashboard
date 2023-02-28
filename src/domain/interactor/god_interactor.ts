@@ -6,6 +6,7 @@ import { InnEntity } from "../entity/inn_entity";
 import { LocationEntity } from "../entity/location_entity";
 import { RoomEntity } from "../entity/room_entity";
 import { RosterEntity } from "../entity/roster_entity";
+import { SummaryEntity } from "../entity/summary_entity";
 
 const axios = new AxiosHttp();
 
@@ -149,7 +150,10 @@ class RoomInteractor {
   async store(option?: { [key: string]: any } | undefined): Promise<void> {
     const form = new FormData();
 
+    form.append("innId", option!.innId);
     form.append("locationId", option!.locationId);
+    form.append("inn", option!.inn);
+    form.append("location", option!.location);
     form.append("name", option!.name);
     form.append("capacity", option!.capacity);
     form.append("picture", option!.picture);
@@ -165,7 +169,6 @@ class RoomInteractor {
   async update(option?: { [key: string]: any } | undefined): Promise<void> {
     const form = new FormData();
 
-    form.append("locationId", option!.locationId);
     form.append("name", option!.name);
     form.append("capacity", option!.capacity);
     form.append("active", option!.active);
@@ -274,7 +277,7 @@ class VoucherInteractor {
 class ConfigInteractor {
   async single(
     option?: { [key: string]: any } | undefined
-  ): Promise<RoomEntity> {
+  ): Promise<ConfigEntity> {
     try {
       const request = await axios.client().get(`admin/configs/${option!.id}`);
       const results = request.data;
@@ -299,6 +302,44 @@ class ConfigInteractor {
   }
 }
 
+class SummaryInteractor {
+  async single(
+    option?: { [key: string]: any } | undefined
+  ): Promise<SummaryEntity> {
+    try {
+      const request = await axios.client().get(`admin/summaries/${option!.id}`);
+      const results = request.data;
+      return results;
+    } catch (error: any) {
+      throw ErrorHandler.read(error);
+    }
+  }
+
+  async collections(
+    option?: { [key: string]: any } | undefined
+  ): Promise<SummaryEntity[]> {
+    try {
+      const request = await axios
+        .client()
+        .get(`admin/summaries`, { params: option });
+      const results = request.data;
+      return results;
+    } catch (error: any) {
+      throw ErrorHandler.read(error);
+    }
+  }
+}
+
+class ExportInteractor {
+  async single(option?: { [key: string]: any } | undefined): Promise<void> {
+    try {
+      await axios.client().get(`admin/exports/${option!.id}`);
+    } catch (error: any) {
+      throw ErrorHandler.read(error);
+    }
+  }
+}
+
 export {
   InnInteractor,
   LocationInteractor,
@@ -308,4 +349,6 @@ export {
   GuestInteractor,
   VoucherInteractor,
   ConfigInteractor,
+  SummaryInteractor,
+  ExportInteractor,
 };

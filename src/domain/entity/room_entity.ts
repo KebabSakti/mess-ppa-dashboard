@@ -1,5 +1,6 @@
 interface RoomEntity {
   id?: string;
+  innId?: string;
   locationId?: string;
   mess?: string;
   location?: string;

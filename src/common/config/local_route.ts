@@ -1,6 +1,9 @@
 class LocalRoute {
   static root = "/";
+
   static dashboard = "/dashboard";
+
+  static home = `${this.dashboard}/home`;
 
   static booking = `${this.dashboard}/booking`;
   static bookingDetail = `${this.booking}/detail`;

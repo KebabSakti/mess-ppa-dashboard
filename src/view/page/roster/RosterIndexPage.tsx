@@ -142,7 +142,7 @@ function RosterIndexPage(props: any) {
                             <td>{e.name}</td>
                             {e.rosters.map((r: any, t: any) => (
                               <td key={t}>
-                                {r == "OFF" ? (
+                                {r == "OFF" || r == "N" ? (
                                   <label className="text-success font-bold">
                                     {r}
                                   </label>

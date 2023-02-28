@@ -160,7 +160,7 @@ function BookingIndexPage(props: { bookingInteractor: BookingInteractor }) {
                           <tr key={i}>
                             <th>{e.name}</th>
                             <th>
-                              {e.guest == null ? (
+                              {e.guest ? (
                                 <div className="badge badge-info">
                                   Tamu
                                 </div>

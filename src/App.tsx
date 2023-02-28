@@ -7,16 +7,19 @@ import { LocalRoute } from "./common/config/local_route";
 import { AuthInteractor } from "./domain/interactor/auth_interactor";
 import { BookingInteractor } from "./domain/interactor/booking_interactor";
 import { Dashboard } from "./view/component/Dashboard";
-import { Layout } from "./view/component/Layout";
 import { Modal } from "./view/component/Modal";
 import Portal from "./view/component/Portal";
 import { BookingAddPage } from "./view/page/booking/BookingAddPage";
 import { BookingDetailPage } from "./view/page/booking/BookingDetailPage";
 import { BookingEditPage } from "./view/page/booking/BookingEditPage";
 import { BookingIndexPage } from "./view/page/booking/BookingIndexPage";
+import { ConfigEditPage } from "./view/page/config/ConfigEditPage";
+import { ConfigIndexPage } from "./view/page/config/ConfigIndexPage";
 import { EmployeeAddPage } from "./view/page/employee/EmployeeAddPage";
-import { EmployeeIndexPage } from "./view/page/employee/EmployeeIndexPage";
 import { EmployeeEditPage } from "./view/page/employee/EmployeeEditPage";
+import { EmployeeIndexPage } from "./view/page/employee/EmployeeIndexPage";
+import { GuestIndexPage } from "./view/page/guest/GuestIndexPage";
+import { HomeIndexPage } from "./view/page/home/HomeIndexPage";
 import { LocationAddPage } from "./view/page/location/LocationAddPage";
 import { LocationEditPage } from "./view/page/location/LocationEditPage";
 import { LocationIndexPage } from "./view/page/location/LocationIndexPage";
@@ -28,10 +31,7 @@ import { RoomAddPage } from "./view/page/room/RoomAddPage";
 import { RoomEditPage } from "./view/page/room/RoomEditPage";
 import { RoomIndexPage } from "./view/page/room/RoomIndexPage";
 import { RosterIndexPage } from "./view/page/roster/RosterIndexPage";
-import { GuestIndexPage } from "./view/page/guest/GuestIndexPage";
 import { VoucherIndexPage } from "./view/page/voucher/VoucherIndexPage";
-import { ConfigIndexPage } from "./view/page/config/ConfigIndexPage";
-import { ConfigEditPage } from "./view/page/config/ConfigEditPage";
 
 function App() {
   const [loading, setLoading] = useState<any>(false);
@@ -67,7 +67,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: LocalRoute.root,
-      element: <Layout />,
+      element: <Outlet />,
       children: [
         {
           index: true,
@@ -77,6 +77,16 @@ function App() {
           path: LocalRoute.dashboard,
           element: <Dashboard {...loginPageDepencies} />,
           children: [
+            {
+              path: LocalRoute.home,
+              element: <Outlet />,
+              children: [
+                {
+                  index: true,
+                  element: <HomeIndexPage />,
+                },
+              ],
+            },
             {
               path: LocalRoute.booking,
               element: <Outlet />,
