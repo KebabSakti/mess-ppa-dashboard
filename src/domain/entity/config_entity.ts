@@ -4,4 +4,4 @@ interface ConfigEntity {
   value?: string;
 }
 
-export { ConfigEntity };
+export type { ConfigEntity };

@@ -6,4 +6,4 @@ interface GuestEntity {
   updated?: string;
 }
 
-export { GuestEntity };
+export type { GuestEntity };
